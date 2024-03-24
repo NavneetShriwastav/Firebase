@@ -113,6 +113,19 @@
     >
 </androidx.appcompat.widget.AppCompatButton>
 
+    <TextView
+        android:id="@+id/al"
+        android:layout_margin="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Already have an account?"
+        android:layout_gravity="center"
+        android:textSize="17dp"
+        android:textStyle="bold"
+        >
+
+    </TextView>
+
 
 
 

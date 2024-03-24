@@ -3,10 +3,12 @@ package com.example.classup.classup.classup.firebase;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.classup.classup.classup.firebase.databinding.ActivityMainBinding;
@@ -18,13 +20,12 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity {
 
-   private ActivityMainBinding binding;
-   private DatabaseReference databaseReference;
+    private ActivityMainBinding binding;
+    private DatabaseReference databaseReference;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         EditText etPw = binding.etPw;
         EditText etId = binding.etId;
         Button bt = binding.bt;
+        TextView already = binding.al;
 
         bt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
                 String password = etPw.getText().toString();
                 String uid = etId.getText().toString();
 
-
                 if (email.isEmpty() || name.isEmpty() || password.isEmpty() || uid.isEmpty()) {
                     Toast.makeText(MainActivity.this, "Fill in all fields", Toast.LENGTH_SHORT).show();
                     return; // Exit method if any field is empty
@@ -50,31 +51,31 @@ public class MainActivity extends AppCompatActivity {
 
                 Users users = new Users(email,name,password,uid);
 
-
-
-
-                   databaseReference = FirebaseDatabase.getInstance().getReference("Users");
-                   databaseReference.child(uid).setValue(users).addOnSuccessListener(new OnSuccessListener<Void>() {
-                       @Override
-                       public void onSuccess(Void unused) {
-                           Toast.makeText(MainActivity.this,"Sign Up Successfully",Toast.LENGTH_SHORT).show();
-                           etEmail.setText("");
-                           etName.setText("");
-                           etPw.setText("");
-                           etId.setText("");
-                       }
-                   }).addOnFailureListener(new OnFailureListener() {
-                       @Override
-                       public void onFailure(@NonNull Exception e) {
-                           Toast.makeText(MainActivity.this,"Failed",Toast.LENGTH_SHORT).show();
-                       }
-                   });
-
-
-
+                databaseReference = FirebaseDatabase.getInstance().getReference("Users");
+                databaseReference.child(uid).setValue(users).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Toast.makeText(MainActivity.this,"Sign Up Successfully",Toast.LENGTH_SHORT).show();
+                        etEmail.setText("");
+                        etName.setText("");
+                        etPw.setText("");
+                        etId.setText("");
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(MainActivity.this,"Failed",Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
 
-
+        already.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, SignInActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }
